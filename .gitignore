@@ -1,0 +1,8 @@
+erl_crash.dump
+deps
+*.beam
+*.swp
+*.orig
+*.log
+tags
+ebin

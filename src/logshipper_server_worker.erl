@@ -105,7 +105,8 @@ handle_info(timeout, State) ->
     error_logger:error_msg("Logshipper server worker - timeout~n"),
     {stop, normal, State};
 
-handle_info(_Info, State) ->
+handle_info(Msg, State) ->
+    error_logger:error_msg("Logshipper server worker - unexpected message: ~w~n", [Msg]),
     {noreply, State}.
 
 terminate(Reason, #state{ module = Module, state = St }) ->

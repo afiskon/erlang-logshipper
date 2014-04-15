@@ -85,11 +85,11 @@ handle_info({accept, ListenSocket}, #state{ timeout = Timeout } = State) ->
     {noreply, State#state{ timer = Timer, socket = Socket }};
 
 handle_info({tcp, S, <<Type:8, Payload/binary>>}, #state{ module = Module, state = St, timeout = Timeout, timer = Timer } = State) ->
+    inet:setopts(S, [{active, once}]),
     erlang:cancel_timer(Timer),
 
     {ok, NewSt} = process_message(S, Type, Payload, Module, St),
 
-    inet:setopts(S, [{active, once}]),
     NewTimer = erlang:send_after(Timeout, self(), timeout),
     {noreply, State#state{ timer = NewTimer, state = NewSt } };
 
